@@ -37,76 +37,14 @@ RUN git clone https://github.com/city96/ComfyUI-GGUF.git custom_nodes/ComfyUI-GG
     && echo "Installed: ComfyUI-GGUF" \
     && pip3 install gguf
 
-# Install Comfyroll Studio with transformers library
-RUN git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git custom_nodes/Comfyroll-Studio \
-    && echo "Installed: Comfyroll-Studio" \
-    && pip3 install transformers
-
-# Install Impact-Pack with dependencies, including 'ultralytics'
-RUN git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack.git custom_nodes/Impact-Pack \
-    && echo "Installed: Impact-Pack" \
-    && if [ -f custom_nodes/Impact-Pack/requirements.txt ]; then \
-        pip3 install -r custom_nodes/Impact-Pack/requirements.txt || echo "Failed to install Impact-Pack dependencies"; \
+# Install ComfyUI NSFW Detection Node
+RUN git clone https://github.com/katalist-ai/comfyUI-nsfw-detection.git custom_nodes/ComfyUI-nsfw-detection \
+    && echo "Installed: ComfyUI-nsfw-detection" \
+    && if [ -f custom_nodes/ComfyUI-nsfw-detection/requirements.txt ]; then \
+        pip3 install -r custom_nodes/ComfyUI-nsfw-detection/requirements.txt || echo "Failed to install NSFW detection dependencies"; \
     else \
-        echo "No requirements.txt for Impact-Pack"; \
-    fi \
-    && pip3 install numpy pillow ultralytics  # Ensure necessary libraries are installed
-
-# Run the install.py script for Impact-Pack
-RUN if [ -f custom_nodes/Impact-Pack/install.py ]; then \
-        python3 custom_nodes/Impact-Pack/install.py || echo "Failed to run Impact-Pack install.py"; \
-    else \
-        echo "No install.py found for Impact-Pack"; \
+        echo "No requirements.txt for NSFW detection node"; \
     fi
-
-RUN git clone https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git custom_nodes/Derfuu-ModdedNodes \
-    && echo "Installed: Derfuu-ModdedNodes" \
-    && [ -f custom_nodes/Derfuu-ModdedNodes/requirements.txt ] && pip3 install -r custom_nodes/Derfuu-ModdedNodes/requirements.txt || echo "No requirements.txt for Derfuu"
-
-# Clone WAS Node Suite and install dependencies with system Python
-RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui.git custom_nodes/WAS-Node-Suite \
-    && echo "Installed: WAS-Node-Suite" \
-    && if [ -f custom_nodes/WAS-Node-Suite/requirements.txt ]; then \
-        pip3 install -r custom_nodes/WAS-Node-Suite/requirements.txt || echo "Failed to install WAS-Node-Suite dependencies"; \
-    else \
-        echo "No requirements.txt for WAS-Node-Suite"; \
-    fi \
-    && pip3 uninstall -y opencv-python opencv-python-headless[ffmpeg] \
-    && pip3 install opencv-python-headless[ffmpeg]
-
-RUN git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git custom_nodes/Custom-Scripts \
-    && echo "Installed: Custom-Scripts" \
-    && [ -f custom_nodes/Custom-Scripts/requirements.txt ] && pip3 install -r custom_nodes/Custom-Scripts/requirements.txt || echo "No requirements.txt for Custom Scripts"
-
-# Install Art-Venture and handle OpenCV issues
-RUN git clone https://github.com/sipherxyz/comfyui-art-venture.git custom_nodes/Art-Venture \
-    && echo "Installed: Art-Venture" \
-    && pip3 install opencv-python-headless[ffmpeg]
-
-# Install SDXL Prompt Styler with Hugging Face dependencies
-RUN git clone https://github.com/twri/sdxl_prompt_styler.git custom_nodes/SDXL-Prompt-Styler \
-    && echo "Installed: SDXL-Prompt-Styler" \
-    && pip3 install diffusers transformers
-
-# Install Copilot Node with OpenAI dependency
-RUN git clone https://github.com/hylarucoder/comfyui-copilot.git custom_nodes/Copilot \
-    && echo "Installed: Copilot" \
-    && pip3 install openai
-
-# Install RGThree Node and ensure all requirements are satisfied
-RUN git clone https://github.com/rgthree/rgthree-comfy.git custom_nodes/RGThree \
-    && echo "Installed: RGThree" \
-    && [ -f custom_nodes/RGThree/requirements.txt ] && pip3 install -r custom_nodes/RGThree/requirements.txt
-
-# Install Crystools Node
-RUN git clone https://github.com/crystian/ComfyUI-Crystools.git custom_nodes/Crystools \
-    && echo "Installed: Crystools" \
-    && [ -f custom_nodes/Crystools/requirements.txt ] && pip3 install -r custom_nodes/Crystools/requirements.txt
-
-# Install Universal-Styler with Hugging Face dependencies
-RUN git clone https://github.com/KoreTeknology/ComfyUI-Universal-Styler.git custom_nodes/Universal-Styler \
-    && echo "Installed: Universal-Styler" \
-    && pip3 install diffusers transformers
 
 # Install ComfyUI essentials
 RUN git clone https://github.com/cubiq/ComfyUI_essentials.git custom_nodes/ComfyUI_essentials \
@@ -116,16 +54,6 @@ RUN git clone https://github.com/cubiq/ComfyUI_essentials.git custom_nodes/Comfy
     else \
         echo "No requirements.txt for ComfyUI_essentials"; \
     fi
-
-# Install DJZ-Nodes with error handling and pip installation verification
-RUN git clone https://github.com/MushroomFleet/DJZ-Nodes.git custom_nodes/DJZ-Nodes \
-    && echo "Installed: DJZ-Nodes" \
-    && if [ -f custom_nodes/DJZ-Nodes/requirements.txt ]; then \
-        pip3 install -r custom_nodes/DJZ-Nodes/requirements.txt || echo "Failed to install DJZ-Nodes dependencies"; \
-    else \
-        echo "No requirements.txt for DJZ-Nodes"; \
-    fi \
-    && pip3 check || echo "Some dependencies are not satisfied"
 
 # Verify custom nodes are installed
 RUN ls -lh /comfyui/custom_nodes/
